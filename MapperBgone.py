@@ -125,6 +125,7 @@ for device in allDevices:
                     output = apply_configlets(server1,nodeName,nodeIp,nodeId,cnames,ckeys,configlets_to_remove.keys(),configlets_to_remove.values())
                     print output
                     save = save_topology(server1)
+                    dryrun = True
     except:
         print "failure on "+nodeName
         pass
