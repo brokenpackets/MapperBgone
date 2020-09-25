@@ -110,22 +110,23 @@ for device in allDevices:
     configlets = get_configlets_by_device(server1, nodeId)
     cnames = []
     ckeys = []
+    deviceCleared = False
     try:
         for configlet in configlets['configletList']:
             cnames.append(configlet['name'])
             ckeys.append(configlet['key'])
         for item in configlets_to_remove.keys():
             if item in cnames:
+                deviceCleared = True
                 cnames.remove(item)
                 print 'Removing Configlet '+item+' from '+nodeName
                 for item in configlets_to_remove.values():
                     if item in ckeys:
                         ckeys.remove(item)
-                if dryrun == False:
-                    output = apply_configlets(server1,nodeName,nodeIp,nodeId,cnames,ckeys,configlets_to_remove.keys(),configlets_to_remove.values())
-                    print output
-                    save = save_topology(server1)
-                    dryrun = True
+        if dryrun == False and deviceCleared == True:
+            output = apply_configlets(server1,nodeName,nodeIp,nodeId,cnames,ckeys,configlets_to_remove.keys(),configlets_to_remove.values())
+            print output
+            save = save_topology(server1)
     except:
         print "failure on "+nodeName
         pass
